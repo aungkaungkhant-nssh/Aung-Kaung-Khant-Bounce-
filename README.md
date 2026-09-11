@@ -27,6 +27,9 @@ in a browser or drop on any static host.
 - Layout is a bento grid that reflows across three breakpoints
 - Background is a tinted ground with a graph-paper grid, three slow-drifting colour
   fields and an SVG grain layer
+- An intro splash on first load — monogram, name and a hairline that fills while the
+  fonts settle; shown once per tab, skipped on any click or key, on deep links and
+  when JavaScript is off
 - Light by default with a dark toggle; the choice is remembered in `localStorage`
 - Navigation is a scroll map — the ticks sit where the sections actually are in the
   document, and a marker tracks reading position

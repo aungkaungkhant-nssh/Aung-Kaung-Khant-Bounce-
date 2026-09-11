@@ -387,6 +387,73 @@ html { scroll-behavior: smooth; }
 
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
 
+/* ---------------- splash : first paint, once per session ---------------- */
+/* Hidden unless the boot script opts in, so no-JS and repeat visits go
+   straight to the page with nothing to dismiss. */
+#splash { display: none; }
+html.splash-on, html.splash-on body { overflow: hidden; }
+
+html.splash-on #splash {
+  display: grid; place-items: center;
+  position: fixed; inset: 0; z-index: 120;
+  background-color: var(--ground);
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 32px 32px;
+  background-position: -1px -1px;
+  transition: opacity .6s cubic-bezier(.4,0,.2,1);
+}
+html.splash-done #splash { opacity: 0; pointer-events: none; }
+html.splash-on  .wrap { opacity: 0; }
+html.splash-done .wrap { opacity: 1; transition: opacity .75s ease .15s; }
+
+.sp-in {
+  display: grid; justify-items: center; gap: 15px;
+  padding-inline: 22px; text-align: center;
+  transition: transform .55s cubic-bezier(.4,0,.2,1), opacity .4s ease;
+}
+html.splash-done .sp-in { transform: translateY(-14px); opacity: 0; }
+
+.sp-mark { line-height: 0; animation: sp-mark .7s cubic-bezier(.2,.8,.25,1) both; }
+.sp-mark svg { display: block; width: 54px; height: 54px; }
+.sp-mark svg rect { fill: var(--accent); }
+.sp-mark svg path { fill: var(--ground); }
+@keyframes sp-mark {
+  from { opacity: 0; transform: translateY(10px) scale(.86); filter: blur(5px); }
+  to   { opacity: 1; transform: none; filter: blur(0); }
+}
+
+/* the name rides up from behind its own baseline */
+.sp-name { overflow: hidden; padding-bottom: .12em; margin-bottom: -.12em; }
+.sp-name span {
+  display: block;
+  font-size: clamp(27px, 7.4vw, 44px);
+  font-weight: 700; letter-spacing: -.024em; line-height: 1.12;
+  animation: sp-rise .8s cubic-bezier(.16,.84,.24,1) .12s both;
+}
+@keyframes sp-rise { from { transform: translateY(105%); } to { transform: translateY(0); } }
+
+.sp-sub {
+  margin: 0;
+  font-size: 10.5px; font-weight: 500;
+  letter-spacing: .16em; text-transform: uppercase; color: var(--faint);
+  animation: sp-fade .7s ease .4s both;
+}
+@keyframes sp-fade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+.sp-bar {
+  display: block; width: min(190px, 52vw); height: 1px; margin-top: 3px;
+  background: var(--hair-2); overflow: hidden;
+  animation: sp-fade .5s ease .5s both;
+}
+.sp-bar i {
+  display: block; height: 100%; width: 100%;
+  background: var(--accent); transform-origin: 0 50%;
+  animation: sp-bar 1.15s cubic-bezier(.65,.02,.28,1) .52s both;
+}
+@keyframes sp-bar { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; }
   .glow { animation: none !important; }
@@ -398,11 +465,65 @@ html { scroll-behavior: smooth; }
 <body>
 <script>
   (function () {
+    var root = document.documentElement;
+
     try {
       var t = localStorage.getItem('akk-theme');
-      if (t === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+      if (t === 'dark') root.setAttribute('data-theme', 'dark');
     } catch (e) {}
+
+    /* Splash once per tab, and never when arriving at a deep link. */
+    var show = !location.hash;
+    try { if (sessionStorage.getItem('akk-splash') === '1') show = false; } catch (e) {}
+    if (show) root.className += ' splash-on';
   })();
+</script>
+
+<div id="splash" aria-hidden="true">
+  <div class="sp-in">
+    <span class="sp-mark">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7.5"/><path fill-rule="evenodd" d="M16 6.6L24 25.4L19.9 25.4L18.45 21.7L13.55 21.7L12.1 25.4L8 25.4Z M16 13L14.45 18.1L17.55 18.1Z"/></svg>
+    </span>
+    <div class="sp-name"><span>Aung Kaung Khant</span></div>
+    <p class="sp-sub mono">Full stack developer &mdash; Hpa-An, Myanmar</p>
+    <span class="sp-bar"><i></i></span>
+  </div>
+</div>
+
+<script>
+(function () {
+  var root = document.documentElement;
+  var sp = document.getElementById('splash');
+  if (!sp || root.className.indexOf('splash-on') < 0) return;
+
+  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var MIN = reduce ? 250 : 1500;   /* long enough to cover the font swap */
+  var start = Date.now();
+  var done = false;
+
+  function finish() {
+    if (done) return;
+    done = true;
+    root.className += ' splash-done';
+    try { sessionStorage.setItem('akk-splash', '1'); } catch (e) {}
+    setTimeout(function () {
+      root.className = root.className.replace(/\s*splash-(on|done)\b/g, '');
+      if (sp.parentNode) sp.parentNode.removeChild(sp);
+    }, reduce ? 80 : 700);
+  }
+
+  function ready() { setTimeout(finish, Math.max(0, MIN - (Date.now() - start))); }
+
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(ready);
+  if (document.readyState === 'complete') ready();
+  else window.addEventListener('load', ready);
+
+  setTimeout(finish, 3200);   /* failsafe: never trap the page */
+
+  ['pointerdown', 'keydown', 'wheel', 'touchstart'].forEach(function (ev) {
+    window.addEventListener(ev, finish, { once: true, passive: true });
+  });
+})();
 </script>
 
 <div class="bgfx" aria-hidden="true">
