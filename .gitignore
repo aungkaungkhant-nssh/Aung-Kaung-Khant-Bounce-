@@ -1,0 +1,7 @@
+# Deny everything by default, then allow only what belongs in a public repo.
+# This keeps private working documents out even if new files land in this folder.
+*
+
+!.gitignore
+!README.md
+!index.html
