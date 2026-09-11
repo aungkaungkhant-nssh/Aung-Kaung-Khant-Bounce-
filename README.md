@@ -3,7 +3,7 @@
 Personal portfolio of **Aung Kaung Khant**, a full stack developer in Hpa-An, Myanmar,
 strongest on the backend. Built as a single self-contained HTML file.
 
-**Live:** https://aungkaungkhant-nssh.github.io/Aung-Kaung-Khant-Bounce-/
+**Live:** https://www.aungkaungkhant.com/
 
 ---
 
