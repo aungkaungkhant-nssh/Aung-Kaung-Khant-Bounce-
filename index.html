@@ -761,9 +761,10 @@ html.splash-done .sp-in { transform: translateY(-14px); opacity: 0; }
         <p class="what">Live event &amp; artist tipping platform</p>
         <div class="wgrid">
           <p class="hard">
-            The RubexPay gateway has <b>no webhook</b>. A guest who tips and closes the app would strand
-            the payment mid-flight — so I built a <b>scheduled reconciliation sweep</b> that settles
-            anything the customer never waited around to confirm.
+            A guest tips, pays, and closes the app before the gateway sends them back — the money moves
+            but the platform never hears about it. So the server doesn't wait for the guest: a
+            <b>scheduled reconciliation sweep</b> checks every pending order with RubexPay and settles
+            anything the customer never stayed to confirm.
           </p>
           <ul class="bul">
             <li><b>All three tiers, solo</b> — the Laravel API, the Next.js admin dashboard, and the mobile PWA event guests actually hold.</li>
