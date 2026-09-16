@@ -716,8 +716,9 @@ html.splash-done .sp-in { transform: translateY(-14px); opacity: 0; }
         <p class="what">E-commerce &amp; consignment platform — <a href="https://blingo.app">blingo.app</a></p>
         <div class="wgrid">
           <p class="hard">
-            A domain this wide strangles itself with circular imports if you let it. I grouped the backend <b>by business process</b> and kept the groups talking
-            through an <b>event/listener layer</b> instead of importing one another.
+            I architected the backend from scratch as <b>process-based domain groups</b> — product, cart, order, delivery, payment, reward, commission,
+            consignment, influencer. Side effects like notifications and rewards go through an <b>event/listener layer</b> and run after the transaction commits,
+            so the core flows don't wait on them and cross-module forwardRef stays the exception, not the pattern.
           </p>
           <ul class="bul">
             <li><b>Payments the way people here actually pay</b> — bank transfer, mobile wallet, QR and cash on delivery, with uploaded slips, an accountant approval stamp and deposit-plus-balance preorders.</li>
@@ -728,7 +729,7 @@ html.splash-done .sp-in { transform: translateY(-14px); opacity: 0; }
         </div>
         <div class="tags">
           <span class="tag">NestJS</span><span class="tag">TypeScript</span><span class="tag">TypeORM</span>
-          <span class="tag">PostgreSQL</span><span class="tag">Redis</span><span class="tag">Socket.IO</span><span class="tag">Docker</span>
+          <span class="tag">PostgreSQL</span><span class="tag">Socket.IO</span><span class="tag">Docker</span>
         </div>
       </article>
 
