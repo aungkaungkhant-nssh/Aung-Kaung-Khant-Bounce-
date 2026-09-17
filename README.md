@@ -52,4 +52,4 @@ python3 -m http.server 5173
 - **LinkedIn** — https://www.linkedin.com/in/aung-kaung-khant-bounce-7682ab245/
 - **GitHub** — https://github.com/aungkaungkhant-nssh
 
-Open to remote full stack roles and freelance backend work.
+Open to full stack roles — remote, or relocation with visa sponsorship — and freelance backend work.
