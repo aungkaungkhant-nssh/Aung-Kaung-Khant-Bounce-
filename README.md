@@ -18,20 +18,19 @@ The same content, in the same order, as the résumé PDF:
 | **Technical Skills** | Backend, Frontend, Data & Ops, AI & Testing |
 | **Education & Languages** | B.C.Sc., AWS certification in progress, Burmese and English |
 
-The page is written up as API documentation: each section is an endpoint
-(`GET /me`, `GET /experience/yec`, `POST /contact`) with the prose on the left and the
-same facts as a JSON response on the right.
+The page borrows the layout of a documentation site: sections down the left, the
+write-up in the middle, and a dark "at a glance" card on the right with the key facts.
 
 ## How it's built
 
 No framework, no build step, no dependencies — one `index.html` you can open directly
 in a browser or drop on any static host.
 
-- Three columns: endpoint list, prose, and a dark request/response panel that stays in
-  view while its section is read
-- The endpoint list highlights the section being read; on phones it becomes a drawer
-  and the response panel drops under the prose
-- "Run" on a panel replays its response; "Copy email" on the contact endpoint
+- Three columns: section list, prose, and a dark "at a glance" card that stays in view
+  while its section is read (role, period, a three-step flow, what it was built with)
+- The section list highlights the one being read; on phones it becomes a drawer and
+  the card drops under the prose
+- "Copy email" in the contact section
 - Light by default with a dark toggle; the choice is remembered in `localStorage`
 - The portrait is embedded as a WebP data URI, so the page stays one file
 - Fonts: Inter and JetBrains Mono via Google Fonts
