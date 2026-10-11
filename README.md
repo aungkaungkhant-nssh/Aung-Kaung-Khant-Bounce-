@@ -9,32 +9,32 @@ strongest on the backend. Built as a single self-contained HTML file.
 
 ## What's in it
 
-Five production systems, each written up around the one problem that took the real thinking:
+The same content, in the same order, as the résumé PDF:
 
-| System | What it is |
+| Section | What it covers |
 |---|---|
-| **PhiLo POS** | Multi-branch inventory & point of sale, co-owned — offline-first, in production with paying customers |
-| **Blingo** | E-commerce & consignment platform — backend lead |
-| **MyTogether Shop** | Multi-vendor marketplace & delivery API — live on Google Play |
-| **Raveon Live Mini** | Live event & artist tipping platform with its own payment integration |
-| **DevPulse AI** | Bilingual (Burmese + English) RAG document & code Q&A |
+| **Experience** | Raveon Live Mini (Ravus Law Chamber Company), Blingo (YEC Company, backend lead) and MyTogether Shop (freelance, live on Google Play) |
+| **Projects** | PhiLo POS (side product, in production with paying customers) and DevPulse AI (personal, bilingual RAG) |
+| **Technical Skills** | Backend, Frontend, Data & Ops, AI & Testing |
+| **Education & Languages** | B.C.Sc., AWS certification in progress, Burmese and English |
+
+The page is written up as API documentation: each section is an endpoint
+(`GET /me`, `GET /experience/yec`, `POST /contact`) with the prose on the left and the
+same facts as a JSON response on the right.
 
 ## How it's built
 
 No framework, no build step, no dependencies — one `index.html` you can open directly
 in a browser or drop on any static host.
 
-- Layout is a bento grid that reflows across three breakpoints
-- Background is a tinted ground with a graph-paper grid, three slow-drifting colour
-  fields and an SVG grain layer
-- An intro splash on first load — monogram, name and a hairline that fills while the
-  fonts settle; shown once per tab, skipped on any click or key, on deep links and
-  when JavaScript is off
+- Three columns: endpoint list, prose, and a dark request/response panel that stays in
+  view while its section is read
+- The endpoint list highlights the section being read; on phones it becomes a drawer
+  and the response panel drops under the prose
+- "Run" on a panel replays its response; "Copy email" on the contact endpoint
 - Light by default with a dark toggle; the choice is remembered in `localStorage`
-- Navigation is a scroll map — the ticks sit where the sections actually are in the
-  document, and a marker tracks reading position
-- The portrait is a cut-out embedded as a WebP data URI, so the page stays one file
-- Fonts: Hanken Grotesk and IBM Plex Mono via Google Fonts
+- The portrait is embedded as a WebP data URI, so the page stays one file
+- Fonts: Inter and JetBrains Mono via Google Fonts
 
 ## Running it
 
